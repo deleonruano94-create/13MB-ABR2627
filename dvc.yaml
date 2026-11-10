@@ -1,0 +1,99 @@
+# =====================================================================
+# Pipeline de DataOps – Sprint 1 (Comprensión y Preparación de los datos)
+#
+#   visualizar ──┐
+#                ├─> (reportes)
+#   calidad_raw ─┴─> preparar ─> calidad_processed
+#
+# Ejecutar todo:            dvc repro
+# Ver el grafo:             dvc dag
+# Ver métricas de calidad:  dvc metrics show
+# Comparar con otra rama:   dvc metrics diff main
+# =====================================================================
+
+stages:
+
+  visualizar:
+    desc: "Comprensión de los datos: exporta gráficos exploratorios (ex CD01)"
+    cmd: python -m src.visualizacion
+    deps:
+      - src/visualizacion.py
+      - src/utils.py
+      - data/raw/datos_clientes.csv
+      - data/raw/datos_resenas.csv
+    params:
+      - visualizacion
+      - rangos.edad
+    outs:
+      - reports/figures:
+          cache: false        # se versionan en Git para verlas en GitHub
+
+  calidad_raw:
+    desc: "Verificación de calidad de los datos de origen (DMBoK cap. 13 / ISO 25012)"
+    cmd: >-
+      python -m src.reporte_calidad --etapa raw &&
+      python -m pytest tests/test_calidad_raw.py -q
+      --junitxml=reports/calidad/junit_raw.xml
+    deps:
+      - src/calidad.py
+      - src/reporte_calidad.py
+      - tests/test_calidad_raw.py
+      - data/raw/datos_clientes.csv
+      - data/raw/datos_resenas.csv
+    params:
+      - dominios
+      - rangos
+      - calidad.raw
+    metrics:
+      - reports/calidad/metricas_raw.json:
+          cache: false
+    outs:
+      - reports/calidad/reporte_raw.md:
+          cache: false
+      - reports/calidad/junit_raw.xml:
+          cache: false
+
+  preparar:
+    desc: "Preparación: limpieza, imputación, integración y nuevos atributos (ex CD02)"
+    cmd: >-
+      python -m pytest tests/test_preparacion.py -q &&
+      python -m src.preparacion
+    deps:
+      - src/preparacion.py
+      - src/utils.py
+      - tests/test_preparacion.py
+      - data/raw/datos_clientes.csv
+      - data/raw/datos_resenas.csv
+      - reports/calidad/junit_raw.xml   # solo corre si la calidad de origen fue aceptada
+    params:
+      - preparacion
+      - rangos.edad
+    outs:
+      - data/processed/datos_integrados.csv
+      - reports/preparacion/resumen_preparacion.json:
+          cache: false
+
+  calidad_processed:
+    desc: "Quality gate del dataset final antes del modelado"
+    cmd: >-
+      python -m src.reporte_calidad --etapa processed &&
+      python -m pytest tests/test_calidad_processed.py -q
+      --junitxml=reports/calidad/junit_processed.xml
+    deps:
+      - src/calidad.py
+      - src/reporte_calidad.py
+      - tests/test_calidad_processed.py
+      - data/processed/datos_integrados.csv
+    params:
+      - dominios
+      - rangos
+      - calidad.processed
+      - preparacion.columnas_eliminar_final
+    metrics:
+      - reports/calidad/metricas_processed.json:
+          cache: false
+    outs:
+      - reports/calidad/reporte_processed.md:
+          cache: false
+      - reports/calidad/junit_processed.xml:
+          cache: false

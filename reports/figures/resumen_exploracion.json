@@ -1,0 +1,32 @@
+{
+  "clientes": {
+    "filas": 10400,
+    "columnas": 6
+  },
+  "resenas": {
+    "filas": 25063,
+    "columnas": 13
+  },
+  "distribucion_sentimiento": {
+    "Positivo": 0.6455,
+    "Negativo": 0.1787,
+    "Neutral": 0.1758
+  },
+  "figuras_generadas": [
+    "01_distribucion_sentimiento.png",
+    "02_longitud_texto_sentimiento.png",
+    "03_clientes_canal_registro.png",
+    "03_clientes_ciudad.png",
+    "03_clientes_genero.png",
+    "04_resenas_canal_compra.png",
+    "04_resenas_categoria_producto.png",
+    "04_resenas_plataforma.png",
+    "04_resenas_problema_resuelto.png",
+    "04_resenas_reclamo_formal.png",
+    "05_correlacion_clientes.png",
+    "05_correlacion_resenas.png",
+    "06_edad_atipicos.png",
+    "07_calificacion_vs_sentimiento.png",
+    "08_nulos_resenas.png"
+  ]
+}

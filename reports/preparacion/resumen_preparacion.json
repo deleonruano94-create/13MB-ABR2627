@@ -1,0 +1,73 @@
+{
+  "origen": {
+    "clientes": 10400,
+    "resenas": 25063
+  },
+  "duplicados_eliminados": 63,
+  "edades_fuera_de_rango": {
+    "cantidad": 28,
+    "tratamiento": "imputar"
+  },
+  "imputacion": {
+    "edad": {
+      "nulos_imputados": 271,
+      "agrupar_por": "ciudad",
+      "medianas": {
+        "Buenos Aires": 39.0,
+        "Córdoba": 37.0,
+        "La Plata": 38.0,
+        "Mar del Plata": 37.0,
+        "Mendoza": 38.0,
+        "Posadas": 37.0,
+        "Rosario": 38.0,
+        "Salta": 38.0,
+        "San Miguel de Tucumán": 38.0,
+        "Santa Fe": 38.0
+      }
+    },
+    "tiempo_respuesta_horas": {
+      "nulos_imputados": 756,
+      "agrupar_por": "categoria_producto",
+      "medianas": {
+        "Alimentos": 11.0,
+        "Belleza": 10.7,
+        "Calzado": 10.5,
+        "Deportes": 10.9,
+        "Electrónica": 10.6,
+        "Hogar": 11.1,
+        "Indumentaria": 10.9,
+        "Libros": 11.1
+      }
+    }
+  },
+  "filas_integradas": 25000,
+  "final": {
+    "filas": 25000,
+    "columnas": [
+      "categoria_producto",
+      "canal_compra",
+      "plataforma",
+      "texto_resena",
+      "tiempo_respuesta_horas",
+      "problema_resuelto",
+      "reclamo_formal",
+      "importe_compra",
+      "edad",
+      "genero",
+      "ciudad",
+      "antiguedad_cliente_meses",
+      "longitud_resena",
+      "cantidad_palabras_resena",
+      "tiempo_respuesta_dias",
+      "resenas_previas_cliente",
+      "mes_resena",
+      "dia_semana_resena",
+      "sentimiento"
+    ],
+    "distribucion_sentimiento": {
+      "Positivo": 0.6454,
+      "Negativo": 0.1788,
+      "Neutral": 0.1758
+    }
+  }
+}

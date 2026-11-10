@@ -1,0 +1,103 @@
+{
+  "etapa": "raw",
+  "reglas_evaluadas": 19,
+  "reglas_cumplidas": 19,
+  "indice_calidad": 1.0,
+  "reglas": {
+    "completitud_edad": {
+      "valor": 0.023365,
+      "umbral": 0.05,
+      "cumple": true
+    },
+    "completitud_tiempo_respuesta": {
+      "valor": 0.030204,
+      "umbral": 0.05,
+      "cumple": true
+    },
+    "completitud_obligatorios": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "unicidad_id_cliente": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "unicidad_id_resena": {
+      "valor": 0.002514,
+      "umbral": 0.01,
+      "cumple": true
+    },
+    "duplicados_resenas": {
+      "valor": 0.002514,
+      "umbral": 0.01,
+      "cumple": true
+    },
+    "rango_edad": {
+      "valor": 0.002692,
+      "umbral": 0.01,
+      "cumple": true
+    },
+    "rango_calificacion": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "rango_antiguedad": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "rango_tiempo_respuesta": {
+      "valor": 0.0,
+      "umbral": 0.01,
+      "cumple": true
+    },
+    "importe_positivo": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "dominio_categoricos": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "formato_fecha": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "actualidad_fecha": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "longitud_texto": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "integridad_referencial": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "coherencia_calificacion_sentimiento": {
+      "valor": 0.026214,
+      "umbral": 0.05,
+      "cumple": true
+    },
+    "coherencia_edad_antiguedad": {
+      "valor": 0.080142,
+      "umbral": 0.1,
+      "cumple": true
+    },
+    "balance_clase_minoritaria": {
+      "valor": 0.175797,
+      "umbral": 0.1,
+      "cumple": true
+    }
+  }
+}

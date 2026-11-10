@@ -1,0 +1,105 @@
+# =====================================================================
+# Parámetros del proyecto (DVC los rastrea: si cambian, se re-ejecutan
+# solo las etapas afectadas del pipeline).
+# =====================================================================
+
+rutas:
+  clientes_raw: data/raw/datos_clientes.csv
+  resenas_raw: data/raw/datos_resenas.csv
+  dataset_procesado: data/processed/datos_integrados.csv
+  figuras: reports/figures
+  calidad: reports/calidad
+  preparacion: reports/preparacion
+
+lectura:
+  separador: ";"
+
+# ---------------------------------------------------------------------
+# Dominios de referencia (reglas de negocio validadas con el diccionario
+# de datos del escenario, data/README.md).
+# ---------------------------------------------------------------------
+dominios:
+  genero: [Femenino, Masculino, Otro]
+  ciudad: [Buenos Aires, Córdoba, La Plata, Mendoza, Posadas, Rosario, Salta,
+           San Miguel de Tucumán, Santa Fe, Mar del Plata]
+  canal_registro: [Online, Tienda física]
+  categoria_producto: [Alimentos, Belleza, Calzado, Deportes, Electrónica,
+                       Hogar, Indumentaria, Libros]
+  canal_compra: [Online, Offline]
+  plataforma: [Amazon, Falabella, Flipkart, JioMart, Meesho, MercadoLibre,
+               Nykaa, Zepto]
+  problema_resuelto: [Sí, "No"]
+  reclamo_formal: [Sí, "No"]
+  sentimiento: [Positivo, Neutral, Negativo]
+
+rangos:
+  edad: [18, 90]                    # años
+  calificacion: [1, 5]              # estrellas
+  antiguedad_cliente_meses: [1, 120]
+  tiempo_respuesta_horas: [0, 168]  # máximo una semana
+  importe_compra_min: 0             # estrictamente mayor que 0
+  fecha_resena: ["2025-01-01", "2025-12-31"]  # ventana del histórico
+  longitud_texto_min: 10            # caracteres
+  edad_minima_registro: 16          # años al momento de registrarse
+
+# ---------------------------------------------------------------------
+# Umbrales de aceptación (tolerancia máxima de errores, como proporción).
+# raw: tolerancia para considerar los datos "aptos para ser preparados".
+# processed: tolerancia para considerar el dataset "apto para modelado".
+# ---------------------------------------------------------------------
+calidad:
+  raw:
+    completitud_edad: 0.05
+    completitud_tiempo_respuesta: 0.05
+    completitud_obligatorios: 0.0
+    unicidad_id_cliente: 0.0
+    unicidad_id_resena: 0.01
+    duplicados_resenas: 0.01
+    rango_edad: 0.01
+    rango_calificacion: 0.0
+    rango_antiguedad: 0.0
+    rango_tiempo_respuesta: 0.01
+    importe_positivo: 0.0
+    dominio_categoricos: 0.0
+    formato_fecha: 0.0
+    actualidad_fecha: 0.0
+    longitud_texto: 0.0
+    integridad_referencial: 0.0
+    coherencia_calificacion_sentimiento: 0.05
+    coherencia_edad_antiguedad: 0.10
+    balance_clase_minoritaria: 0.10   # proporción MÍNIMA de la clase menos frecuente
+  processed:
+    nulos: 0.0
+    duplicados: 0.0
+    rango_edad: 0.0
+    rango_tiempo_respuesta: 0.0
+    dominio_categoricos: 0.0
+    retencion_filas_min: 0.99         # filas finales / reseñas únicas
+    desvio_distribucion_clases_max: 0.02
+
+# ---------------------------------------------------------------------
+# Preparación de los datos
+# ---------------------------------------------------------------------
+preparacion:
+  columnas_eliminar_clientes: [canal_registro]
+  # Las edades fuera de rango se tratan como dato faltante (y se imputan)
+  # en lugar de eliminar al cliente: así no se pierden sus reseñas.
+  edad_fuera_de_rango: imputar        # opciones: imputar | eliminar
+  imputacion:
+    edad: {estrategia: mediana, agrupar_por: ciudad}
+    tiempo_respuesta_horas: {estrategia: mediana, agrupar_por: categoria_producto}
+  # La etiqueta "sentimiento" es coherente con el texto; la calificación es la
+  # que presenta ruido. Por eso no se filtran las filas incoherentes.
+  filtrar_incoherencia_calificacion: false
+  columnas_eliminar_final: [id_cliente, id_resena, calificacion, fecha_resena]
+  nuevos_atributos:
+    longitud_resena: true
+    cantidad_palabras_resena: true
+    tiempo_respuesta_dias: true
+    resenas_previas_cliente: true
+    mes_resena: true
+    dia_semana_resena: true
+
+visualizacion:
+  dpi: 110
+  estilo: whitegrid

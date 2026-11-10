@@ -1,0 +1,347 @@
+schema: '2.0'
+stages:
+  visualizar:
+    cmd: python -m src.visualizacion
+    deps:
+    - path: data/raw/datos_clientes.csv
+      hash: md5
+      md5: b46a5adb5c13bc3007ad2dfe45e58430
+      size: 438782
+    - path: data/raw/datos_resenas.csv
+      hash: md5
+      md5: e3ec9eeddaab38eea998b348bcd17d94
+      size: 4465568
+    - path: src/utils.py
+      hash: md5
+      md5: 8badb8b6bf324b7b053afe1935299d1c
+      size: 1288
+    - path: src/visualizacion.py
+      hash: md5
+      md5: c54cab31601bd98716ab8984395bdd87
+      size: 4541
+    params:
+      params.yaml:
+        rangos.edad:
+        - 18
+        - 90
+        visualizacion:
+          dpi: 110
+          estilo: whitegrid
+    outs:
+    - path: reports/figures
+      hash: md5
+      md5: 8d2528c6f312e51e0795f90a863a3de2.dir
+      size: 348429
+      nfiles: 16
+  calidad_raw:
+    cmd: python -m src.reporte_calidad --etapa raw && python -m pytest 
+      tests/test_calidad_raw.py -q --junitxml=reports/calidad/junit_raw.xml
+    deps:
+    - path: data/raw/datos_clientes.csv
+      hash: md5
+      md5: b46a5adb5c13bc3007ad2dfe45e58430
+      size: 438782
+    - path: data/raw/datos_resenas.csv
+      hash: md5
+      md5: e3ec9eeddaab38eea998b348bcd17d94
+      size: 4465568
+    - path: src/calidad.py
+      hash: md5
+      md5: def323c0efcee2c8230668bb3bbf5b0d
+      size: 11062
+    - path: src/reporte_calidad.py
+      hash: md5
+      md5: 115dbc287f6734b6bf7e07383218e03f
+      size: 2762
+    - path: tests/test_calidad_raw.py
+      hash: md5
+      md5: ce2c4d9da99a6c4e811da5671fb85876
+      size: 2227
+    params:
+      params.yaml:
+        calidad.raw:
+          completitud_edad: 0.05
+          completitud_tiempo_respuesta: 0.05
+          completitud_obligatorios: 0.0
+          unicidad_id_cliente: 0.0
+          unicidad_id_resena: 0.01
+          duplicados_resenas: 0.01
+          rango_edad: 0.01
+          rango_calificacion: 0.0
+          rango_antiguedad: 0.0
+          rango_tiempo_respuesta: 0.01
+          importe_positivo: 0.0
+          dominio_categoricos: 0.0
+          formato_fecha: 0.0
+          actualidad_fecha: 0.0
+          longitud_texto: 0.0
+          integridad_referencial: 0.0
+          coherencia_calificacion_sentimiento: 0.05
+          coherencia_edad_antiguedad: 0.1
+          balance_clase_minoritaria: 0.1
+        dominios:
+          genero:
+          - Femenino
+          - Masculino
+          - Otro
+          ciudad:
+          - Buenos Aires
+          - Córdoba
+          - La Plata
+          - Mendoza
+          - Posadas
+          - Rosario
+          - Salta
+          - San Miguel de Tucumán
+          - Santa Fe
+          - Mar del Plata
+          canal_registro:
+          - Online
+          - Tienda física
+          categoria_producto:
+          - Alimentos
+          - Belleza
+          - Calzado
+          - Deportes
+          - Electrónica
+          - Hogar
+          - Indumentaria
+          - Libros
+          canal_compra:
+          - Online
+          - Offline
+          plataforma:
+          - Amazon
+          - Falabella
+          - Flipkart
+          - JioMart
+          - Meesho
+          - MercadoLibre
+          - Nykaa
+          - Zepto
+          problema_resuelto:
+          - Sí
+          - No
+          reclamo_formal:
+          - Sí
+          - No
+          sentimiento:
+          - Positivo
+          - Neutral
+          - Negativo
+        rangos:
+          edad:
+          - 18
+          - 90
+          calificacion:
+          - 1
+          - 5
+          antiguedad_cliente_meses:
+          - 1
+          - 120
+          tiempo_respuesta_horas:
+          - 0
+          - 168
+          importe_compra_min: 0
+          fecha_resena:
+          - '2025-01-01'
+          - '2025-12-31'
+          longitud_texto_min: 10
+          edad_minima_registro: 16
+    outs:
+    - path: reports/calidad/junit_raw.xml
+      hash: md5
+      md5: de9b21a3b4c704b70cd47742995208ce
+      size: 2640
+    - path: reports/calidad/metricas_raw.json
+      hash: md5
+      md5: eb3c14ca0498982a746b1640b05e6292
+      size: 2140
+    - path: reports/calidad/reporte_raw.md
+      hash: md5
+      md5: 9a2a72f6e19200a75c1db0723e8d84b1
+      size: 2560
+  preparar:
+    cmd: python -m pytest tests/test_preparacion.py -q && python -m 
+      src.preparacion
+    deps:
+    - path: data/raw/datos_clientes.csv
+      hash: md5
+      md5: b46a5adb5c13bc3007ad2dfe45e58430
+      size: 438782
+    - path: data/raw/datos_resenas.csv
+      hash: md5
+      md5: e3ec9eeddaab38eea998b348bcd17d94
+      size: 4465568
+    - path: reports/calidad/junit_raw.xml
+      hash: md5
+      md5: de9b21a3b4c704b70cd47742995208ce
+      size: 2640
+    - path: src/preparacion.py
+      hash: md5
+      md5: 9377ba264795b6d9700d1b0898edfe8f
+      size: 6499
+    - path: src/utils.py
+      hash: md5
+      md5: 8badb8b6bf324b7b053afe1935299d1c
+      size: 1288
+    - path: tests/test_preparacion.py
+      hash: md5
+      md5: 7aa5846ee96d1e20cc6ccff5da2ebc14
+      size: 2339
+    params:
+      params.yaml:
+        preparacion:
+          columnas_eliminar_clientes:
+          - canal_registro
+          edad_fuera_de_rango: imputar
+          imputacion:
+            edad:
+              estrategia: mediana
+              agrupar_por: ciudad
+            tiempo_respuesta_horas:
+              estrategia: mediana
+              agrupar_por: categoria_producto
+          filtrar_incoherencia_calificacion: false
+          columnas_eliminar_final:
+          - id_cliente
+          - id_resena
+          - calificacion
+          - fecha_resena
+          nuevos_atributos:
+            longitud_resena: true
+            cantidad_palabras_resena: true
+            tiempo_respuesta_dias: true
+            resenas_previas_cliente: true
+            mes_resena: true
+            dia_semana_resena: true
+        rangos.edad:
+        - 18
+        - 90
+    outs:
+    - path: data/processed/datos_integrados.csv
+      hash: md5
+      md5: 5446bd60bc33ee0676a5244f7144cf5b
+      size: 5327617
+    - path: reports/preparacion/resumen_preparacion.json
+      hash: md5
+      md5: 86b81bd2c3e9574b86421409ecee3469
+      size: 1685
+  calidad_processed:
+    cmd: python -m src.reporte_calidad --etapa processed && python -m pytest 
+      tests/test_calidad_processed.py -q 
+      --junitxml=reports/calidad/junit_processed.xml
+    deps:
+    - path: data/processed/datos_integrados.csv
+      hash: md5
+      md5: 5446bd60bc33ee0676a5244f7144cf5b
+      size: 5327617
+    - path: src/calidad.py
+      hash: md5
+      md5: def323c0efcee2c8230668bb3bbf5b0d
+      size: 11062
+    - path: src/reporte_calidad.py
+      hash: md5
+      md5: 115dbc287f6734b6bf7e07383218e03f
+      size: 2762
+    - path: tests/test_calidad_processed.py
+      hash: md5
+      md5: e6a41938c9aafa671dd440dff4338620
+      size: 1995
+    params:
+      params.yaml:
+        calidad.processed:
+          nulos: 0.0
+          duplicados: 0.0
+          rango_edad: 0.0
+          rango_tiempo_respuesta: 0.0
+          dominio_categoricos: 0.0
+          retencion_filas_min: 0.99
+          desvio_distribucion_clases_max: 0.02
+        dominios:
+          genero:
+          - Femenino
+          - Masculino
+          - Otro
+          ciudad:
+          - Buenos Aires
+          - Córdoba
+          - La Plata
+          - Mendoza
+          - Posadas
+          - Rosario
+          - Salta
+          - San Miguel de Tucumán
+          - Santa Fe
+          - Mar del Plata
+          canal_registro:
+          - Online
+          - Tienda física
+          categoria_producto:
+          - Alimentos
+          - Belleza
+          - Calzado
+          - Deportes
+          - Electrónica
+          - Hogar
+          - Indumentaria
+          - Libros
+          canal_compra:
+          - Online
+          - Offline
+          plataforma:
+          - Amazon
+          - Falabella
+          - Flipkart
+          - JioMart
+          - Meesho
+          - MercadoLibre
+          - Nykaa
+          - Zepto
+          problema_resuelto:
+          - Sí
+          - No
+          reclamo_formal:
+          - Sí
+          - No
+          sentimiento:
+          - Positivo
+          - Neutral
+          - Negativo
+        preparacion.columnas_eliminar_final:
+        - id_cliente
+        - id_resena
+        - calificacion
+        - fecha_resena
+        rangos:
+          edad:
+          - 18
+          - 90
+          calificacion:
+          - 1
+          - 5
+          antiguedad_cliente_meses:
+          - 1
+          - 120
+          tiempo_respuesta_horas:
+          - 0
+          - 168
+          importe_compra_min: 0
+          fecha_resena:
+          - '2025-01-01'
+          - '2025-12-31'
+          longitud_texto_min: 10
+          edad_minima_registro: 16
+    outs:
+    - path: reports/calidad/junit_processed.xml
+      hash: md5
+      md5: eb422c2525c3ad10632560a0c60882a4
+      size: 1503
+    - path: reports/calidad/metricas_processed.json
+      hash: md5
+      md5: 883270df6d9033f9651a5c6dc9e46fe8
+      size: 816
+    - path: reports/calidad/reporte_processed.md
+      hash: md5
+      md5: 6268ce3394278ac4aa375fad19ac7171
+      size: 1049

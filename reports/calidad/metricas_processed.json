@@ -1,0 +1,43 @@
+{
+  "etapa": "processed",
+  "reglas_evaluadas": 7,
+  "reglas_cumplidas": 7,
+  "indice_calidad": 1.0,
+  "reglas": {
+    "nulos": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "duplicados": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "rango_edad": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "rango_tiempo_respuesta": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "dominio_categoricos": {
+      "valor": 0.0,
+      "umbral": 0.0,
+      "cumple": true
+    },
+    "retencion_filas": {
+      "valor": 1.0,
+      "umbral": 0.99,
+      "cumple": true
+    },
+    "distribucion_clases": {
+      "valor": 0.0,
+      "umbral": 0.02,
+      "cumple": true
+    }
+  }
+}
